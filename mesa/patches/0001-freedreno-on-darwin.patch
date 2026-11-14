@@ -1,0 +1,26 @@
+diff --git a/meson.build b/meson.build
+index 9fe4893..e891719 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1930,7 +1930,7 @@ if system_has_kms_drm
+       'amdgpu' : _libdrm_checks[1][1] ? 'enabled' : 'disabled',
+     },
+   )
+-elif host_machine.system() == 'darwin' and with_gallium_panfrost
++elif host_machine.system() == 'darwin' and (with_gallium_panfrost or with_gallium_freedreno)
+   # Darwin (XNU) has no DRM, but panfrost is built against a stub libdrm
+   # (libdrm-xnu) that forwards to an IOKit kernel interface.
+   dep_libdrm = dependency('libdrm', version : '>=' + _drm_ver, required : true)
+diff --git a/src/freedreno/meson.build b/src/freedreno/meson.build
+index e8f01b8..a6c37f9 100644
+--- a/src/freedreno/meson.build
++++ b/src/freedreno/meson.build
+@@ -22,7 +22,7 @@ subdir('ir2')
+ subdir('ir3')
+ subdir('fdl')
+ 
+-if system_has_kms_drm
++if system_has_kms_drm or host_machine.system() == 'darwin'
+   subdir('drm')
+ endif
+ 
