@@ -1,8 +1,16 @@
 diff --git a/meson.build b/meson.build
-index 9fe4893..e891719 100644
+index 9fe4893..7c3171c 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -1930,7 +1930,7 @@ if system_has_kms_drm
+@@ -995,6 +995,7 @@ endif
+ with_gfx_compute = [
+   with_any_opengl,
+   with_any_vk,
++  with_gallium_freedreno,
+   with_clc,
+   with_gallium_va and with_video_encode,
+   with_gallium_mediafoundation and with_video_encode,
+@@ -1930,7 +1931,7 @@ if system_has_kms_drm
        'amdgpu' : _libdrm_checks[1][1] ? 'enabled' : 'disabled',
      },
    )
