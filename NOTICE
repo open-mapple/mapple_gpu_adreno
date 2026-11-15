@@ -1,0 +1,4 @@
+Mesa (mesa3d.org, MIT) is patched by mesa/patches; the patches are ours and carry no Mesa code beyond the lines they touch.
+libdrm-xnu/msm builds against the libdrm headers of the Mali tree (mapple_gpu_mali, Open Mapple) and the kernel's sweet_msm.h
+(xnu_kernel_qcom_common), whose notice (Copyright (C) 2013 Red Hat, Rob Clark, MIT) names the origin of the msm structures.
+Design follows mapple_gpu_mali's libdrm-xnu and vgpu. Not in this repository: any file of iOS, any vendor firmware.
