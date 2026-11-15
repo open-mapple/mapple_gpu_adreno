@@ -29,7 +29,7 @@ int main(void)
 	CHECK(fd >= 0 && msm_is_fd(fd));
 
 	drmVersionPtr v = drmGetVersion(fd);
-	CHECK(v && !strcmp(v->name, "msm") && v->version_major == 1 && v->version_minor == 3);
+	CHECK(v && !strcmp(v->name, "msm") && v->version_major == 1 && v->version_minor == 4);
 	drmFreeVersion(v);
 	CHECK(drmGetVersion(1000) == NULL);
 

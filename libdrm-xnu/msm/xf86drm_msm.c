@@ -17,7 +17,9 @@ int drmOpenWithType(const char *name, const char *busid, int type)
 	return msm_open();
 }
 
-// The kernel serves the msm interface up to the first softpin revision: queues, GMEM base and buffer addresses (3), no softpin.
+// msm 1.4, the softpin revision, because that is the one where freedreno stops using relocations (version 3 made it emit
+// them, and the kernel refuses them: buffer addresses never move). The kernel does not do the userspace-assigned addresses
+// softpin can also mean: it hands out addresses in GEM_INFO and takes them back as the presumed address of a submit.
 drmVersionPtr drmGetVersion(int fd)
 {
 	struct msm_info info;
@@ -25,7 +27,7 @@ drmVersionPtr drmGetVersion(int fd)
 	drmVersionPtr d = calloc(1, sizeof *d);
 	if (!d) return NULL;
 	d->version_major = 1;
-	d->version_minor = 3;
+	d->version_minor = 4;
 	d->version_patchlevel = 0;
 	d->name = strdup("msm");
 	d->date = strdup("20261115");

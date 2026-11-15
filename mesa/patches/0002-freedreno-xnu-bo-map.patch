@@ -1,0 +1,36 @@
+diff --git a/src/freedreno/drm/freedreno_bo.c b/src/freedreno/drm/freedreno_bo.c
+index 6eda810..a8026eb 100644
+--- a/src/freedreno/drm/freedreno_bo.c
++++ b/src/freedreno/drm/freedreno_bo.c
+@@ -473,8 +473,13 @@ fd_bo_fini_common(struct fd_bo *bo)
+ 
+    fd_bo_fini_fences(bo);
+ 
+-   if (bo->map)
++   if (bo->map) {
++#ifdef __APPLE__
++      drmUnmap(bo->map, bo->size);
++#else
+       os_munmap(bo->map, bo->size);
++#endif
++   }
+ 
+    if (handle) {
+       simple_mtx_lock(&table_lock);
+@@ -618,8 +623,16 @@ fd_bo_map_os_mmap(struct fd_bo *bo)
+    if (ret) {
+       return NULL;
+    }
++#ifdef __APPLE__
++   /* XNU: the device fd is not mmappable; libdrm-xnu maps the BO through the kernel client (the offset is the BO's map token). */
++   {
++      drmAddress addr = NULL;
++      return drmMap(bo->dev->fd, (drm_handle_t)offset, bo->size, &addr) ? MAP_FAILED : addr;
++   }
++#else
+    return os_mmap(0, bo->size, PROT_READ | PROT_WRITE, MAP_SHARED,
+                   bo->dev->fd, offset);
++#endif
+ }
+ 
+ /* For internal use only, does not check FD_BO_NOMAP: */
